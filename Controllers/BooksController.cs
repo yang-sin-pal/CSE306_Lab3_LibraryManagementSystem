@@ -36,7 +36,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBook([FromBody]Book newBook)
+        public ActionResult<Book> AddBook([FromBody]Book newBook)
         {
             if (newBook.Id != Books.Max(x => x.Id + 1))
             {
@@ -47,21 +47,14 @@ namespace LibraryManagementSystem.Controllers
             else
             {
                 Books.Add(newBook);
-                return Ok(new
-                {
-                    message = $"A book with id {newBook.Id} added successfully",
-                    listBook = Books
-                });
+                return newBook;
             }
-            //Return the list Books instead newBook info as the assignment requests
-            //so that we can see the new book added to the list immediately.
-            //Cause Books list instance is recreated on each request.
-            //So we can't see the new book added to the list if we use GetAllBooks() after adding a new book.
+
 
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateBook(int id, Book updateBook)
+        public ActionResult<Book> UpdateBook(int id, Book updateBook)
         {
             var needUpdateBook = Books.FirstOrDefault(x => x.Id == id);
 
@@ -75,11 +68,7 @@ namespace LibraryManagementSystem.Controllers
             needUpdateBook.Year = updateBook.Year;
             needUpdateBook.Genre = updateBook.Genre;
 
-            return Ok(new 
-            { 
-                message = $"A book with id {id} updated successfully",
-                book = needUpdateBook
-            });
+            return needUpdateBook;
         }
 
         [HttpDelete("{id}")]
@@ -94,15 +83,7 @@ namespace LibraryManagementSystem.Controllers
 
             Books.Remove(wantedBook);
 
-            return Ok(new 
-            { 
-                message = $"A book with id {id} deleted successfully",
-                listBook = Books
-            });
-            //Return the list Books instead NoContent() as the assignment requests
-            //so that we can verify that the wanteBook was removed from the list Books.
-            //Cause Books list instance is recreated on each request.
-            //So we can't see the new book added to the list if we use GetAllBooks() after use DeleteBook().
+            return NoContent();
         }
 
     }
