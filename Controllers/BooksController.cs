@@ -36,14 +36,32 @@ namespace LibraryManagementSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Book> AddBook([FromBody]Book newBook)
-        { 
-            Books.Add(newBook);
-            return newBook;
+        public IActionResult AddBook([FromBody]Book newBook)
+        {
+            if (newBook.Id != Books.Max(x => x.Id + 1))
+            {
+                return BadRequest("The id of this new book must larger than the max id in the list 1 unit. " +
+                                    "Example, if the largest id is 3 then the id of this new book is 4 (3 + 1)." +
+                                    " Use GET /api/Books to know the lagrest id.");   
+            }
+            else
+            {
+                Books.Add(newBook);
+                return Ok(new
+                {
+                    message = $"A book with id {newBook.Id} added successfully",
+                    listBook = Books
+                });
+            }
+            //Return the list Books instead newBook info as the assignment requests
+            //so that we can see the new book added to the list immediately.
+            //Cause Books list instance is recreated on each request.
+            //So we can't see the new book added to the list if we use GetAllBooks() after adding a new book.
+
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Book> UpdateBook(int id, Book updateBook)
+        public IActionResult UpdateBook(int id, Book updateBook)
         {
             var needUpdateBook = Books.FirstOrDefault(x => x.Id == id);
 
@@ -57,7 +75,11 @@ namespace LibraryManagementSystem.Controllers
             needUpdateBook.Year = updateBook.Year;
             needUpdateBook.Genre = updateBook.Genre;
 
-            return needUpdateBook;
+            return Ok(new 
+            { 
+                message = $"A book with id {id} updated successfully",
+                book = needUpdateBook
+            });
         }
 
         [HttpDelete("{id}")]
@@ -72,7 +94,15 @@ namespace LibraryManagementSystem.Controllers
 
             Books.Remove(wantedBook);
 
-            return NoContent();
+            return Ok(new 
+            { 
+                message = $"A book with id {id} deleted successfully",
+                listBook = Books
+            });
+            //Return the list Books instead NoContent() as the assignment requests
+            //so that we can verify that the wanteBook was removed from the list Books.
+            //Cause Books list instance is recreated on each request.
+            //So we can't see the new book added to the list if we use GetAllBooks() after use DeleteBook().
         }
 
     }
