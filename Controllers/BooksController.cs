@@ -60,5 +60,20 @@ namespace LibraryManagementSystem.Controllers
             return needUpdateBook;
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBook(int id)
+        { 
+            var wantedBook = Books.FirstOrDefault(x => x.Id == id);
+
+            if (wantedBook == null)
+            {
+                return NotFound();
+            }
+
+            Books.Remove(wantedBook);
+
+            return NoContent();
+        }
+
     }
 }
