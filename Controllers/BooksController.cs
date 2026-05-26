@@ -7,7 +7,7 @@ namespace LibraryManagementSystem.Controllers
     [Route("api/[Controller]")]
     public class BooksController : ControllerBase
     {
-        List<Book> Books = new List<Book>
+        static List<Book> Books = new List<Book>
         {
             new Book { Id = 1, Title = "The Great Gatsby", Author = "F. Scott Fitzgerald", Year = 1925, Genre = "Novel" },
             new Book { Id = 2, Title = "To Kill a Mockingbird", Author = "Harper Lee", Year = 1960, Genre = "Novel" },
