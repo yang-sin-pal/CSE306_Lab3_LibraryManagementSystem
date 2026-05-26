@@ -31,7 +31,7 @@ namespace LibraryManagementSystem.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound("Book not found");
             }
         }
 
@@ -49,7 +49,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (needUpdateBook == null)
             {
-                return NotFound();
+                return NotFound("Book not found");
             }
 
             needUpdateBook.Author = updateBook.Author;
@@ -62,12 +62,12 @@ namespace LibraryManagementSystem.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
-        { 
+        {
             var wantedBook = Books.FirstOrDefault(x => x.Id == id);
 
             if (wantedBook == null)
             {
-                return NotFound();
+                return NotFound("Book not found");
             }
 
             Books.Remove(wantedBook);
