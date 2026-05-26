@@ -20,7 +20,21 @@ namespace LibraryManagementSystem.Controllers
             return Books;
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<Book> tBookById(int id)
+        { 
+            var Book = Books.FirstOrDefault(x => x.Id == id);
 
+            if (Book != null)
+            {
+                return Book;
+            }
+            else
+            {
+                return NotFound();
+            }
+           
+        }
 
     }
 }
