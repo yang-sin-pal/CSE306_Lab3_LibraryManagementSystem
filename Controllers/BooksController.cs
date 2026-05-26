@@ -42,7 +42,23 @@ namespace LibraryManagementSystem.Controllers
             return newBook;
         }
 
+        [HttpPut("{id}")]
+        public ActionResult<Book> UpdateBook(int id, Book updateBook)
+        {
+            var needUpdateBook = Books.FirstOrDefault(x => x.Id == id);
 
+            if (needUpdateBook == null)
+            {
+                return NotFound();
+            }
+
+            needUpdateBook.Author = updateBook.Author;
+            needUpdateBook.Title = updateBook.Title;
+            needUpdateBook.Year = updateBook.Year;
+            needUpdateBook.Genre = updateBook.Genre;
+
+            return needUpdateBook;
+        }
 
     }
 }
