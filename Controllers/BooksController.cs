@@ -33,8 +33,16 @@ namespace LibraryManagementSystem.Controllers
             {
                 return NotFound();
             }
-           
         }
+
+        [HttpPost]
+        public ActionResult<Book> AddBook([FromBody]Book newBook)
+        { 
+            Books.Add(newBook);
+            return newBook;
+        }
+
+
 
     }
 }
